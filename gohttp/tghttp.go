@@ -138,11 +138,6 @@ func (this *Httpclient) Submit(req *http.Request) *Future {
 	}
 }
 
-//type CallBack interface {
-//	OnFailure(err error)
-//	OnResponse(resp *TGHttpResponse)
-//}
-
 func (this *Httpclient) Async(req *http.Request, onResponse func(*TGHttpResponse), onFailure func(error)) {
 	req.Header.Set("User-Agent", this.userAgent)
 	go func() {
@@ -221,6 +216,10 @@ func RequestBuilder() *TGHttpRequest {
 
 func (this *TGHttpRequest) Header(key string, value string) *TGHttpRequest {
 	this.header[key] = append(this.header[key], value)
+	return this
+}
+func (this *TGHttpRequest) Cookie(cookie *http.Cookie) *TGHttpRequest {
+	this.header["Cookie"] = append(this.header["Cookie"], cookie.String())
 	return this
 }
 
